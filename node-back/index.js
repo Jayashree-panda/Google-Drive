@@ -16,14 +16,10 @@ const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
 // time.
 const TOKEN_PATH = 'token.json';
 function authorize(credentials, callback) {
-    console.log("hi autho"+JSON.stringify(credentials.web.client_id)+"jj")
-    // const {client_secret, client_id, redirect_uri} = JSON.stringify(credentials.web);
-    const client_id = JSON.stringify(credentials.web.client_id);
-    const client_secret = JSON.stringify(credentials.web.client_secret);
-    const redirect_uri = JSON.stringify(credentials.web.redirect_uri);
-    console.log(client_id+ "j")
+    const {client_secret, client_id, redirect_uris} = credentials.web;
+    // console.log(client_id+ "j")
     const oAuth2Client = new google.auth.OAuth2(
-      client_id, client_secret, redirect_uri);
+      client_id, client_secret, redirect_uris[0]);
 
   // Check if we have previously stored a token.
   fs.readFile(TOKEN_PATH, (err, token) => {
@@ -77,12 +73,12 @@ function getAccessToken(oAuth2Client, callback) {
     });
   }
 
-app.post('/uploadFile',(req,res)=>{
+app.get('/uploadFile',(req,res)=>{
     fs.readFile('credentials.json', (err, content) => {
         if (err) return console.log('Error loading client secret file:', err);
         // Authorize a client with credentials, then call the Google Drive API.
-        console.log("lo")
-        console.log(JSON.parse(content),"s")
+        // console.log("lo")
+        // console.log(JSON.parse(content),"s")
         authorize(JSON.parse(content), listFiles);
       });
       
